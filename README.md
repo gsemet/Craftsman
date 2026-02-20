@@ -9,6 +9,17 @@ Instead of endless manual prompting, Craftsman provides structured workflows
 that ensure quality through systematic planning, autonomous implementation,
 and continuous validation.
 
+## Features
+
+- Simple 2 files, 2 agent modes: Plan Mode / Ralph Loop.
+- **Plan Mode**: An interview-based planning agent that produces reviewable specifications
+  and actionable task breakdowns.
+- **Ralph Loop Mode**: An orchestration agent that autonomously implements tasks
+  with continuous verification
+- **Structured Artifacts**: Clear, traceable files for specifications, plans, and tasks
+- Integration with external issue trackers via JIRA-ID naming convention
+- Optional Human-in-the-loop (HITL) phase review for stakeholder review at critical points during
+  implementation.
 ## Why Craftsman?
 
 Craftsman is an **experiment in structured agent orchestration**, exploring three key questions:
@@ -50,7 +61,7 @@ This is **linear, stateful, and autonomous** — you start the loop and step awa
 
 Craftsman currently provides two complementary agent modes:
 
-### 🎯 Plan Mode
+### � Plan Mode
 
 **A research and planning agent that produces reviewable specifications and actionable task breakdowns.**
 
@@ -95,7 +106,7 @@ Plan Mode systematically explores your change request through:
   Tasks are grouped into phases, but each task file is self-contained
   to reduce cognitive overload and token waste.
 
-### 🔄 Ralph Loop Mode
+### � Ralph Loop Mode
 
 **An orchestration agent that autonomously implements tasks with continuous verification.**
 
@@ -111,13 +122,14 @@ Ralph Loop manages the complete implementation lifecycle:
 **Two operational modes**:
 
 - **Auto Mode** (default) — continuous implementation until all tasks complete
-- **HITL Mode** (Human-in-the-loop) — pauses at phase boundaries for human validation
+- **HITL Mode** (Human-in-the-loop) — pauses at phase boundaries for human review. This allows
+  to "steer"
 
 **Verification system**:
 
 - **Task Inspector** — validates individual task completion after each Coder run
 - **Phase Inspector** — generates comprehensive phase review reports
-- **Retry mechanism** — marks incomplete tasks as 🔴 for priority rework
+- **Retry mechanism** — marks incomplete tasks for high priority rework by a new coder subagent
 
 At the end of each coding task AND after each review, a commit message is generated.
 This creates a clear, traceable commit history that links implementation decisions
@@ -126,8 +138,6 @@ back to the original plan and specification.
 It is higly recommended to squash all these commits into a single,
 self-contained commit before merging to the main branch,
 to avoid polluting the commit history with intermediate implementation steps.
-
----
 
 ## Personas
 
@@ -164,7 +174,9 @@ to avoid polluting the commit history with intermediate implementation steps.
 ### Planning a Change
 
 1. Start Copilot Chat and select the Agent **@Craftsman: Plan Mode**
+
    ![Plan Mode selection screenshot](images/agent-plan-mode.png)
+
 2. Provide your change request (or paste JIRA ticket)
 3. Answer the clarifying questions
 4. Review the generated specification in `.agents/changes/<JIRA-123>-<short-description>/01-specification.md`
@@ -191,7 +203,14 @@ to avoid polluting the commit history with intermediate implementation steps.
 
 **Pausing Ralph Loop**: Create `PAUSE.md` in the planning folder to safely pause the loop for manual task edits.
 
----
+## Concrete advices
+
+- Start with a small request in markdown (`.agents/changes/JIRA-123-description/00.request.md`)
+- Use a mid-size model like Claude Sonnet 4.5 for the Plan Mode.
+- Reserve Opus only when tasks require complex reasoning or multi-phase implementation (20+ tasks)
+- Use Claude Haiku for implementation. But for the moment, you can use Sonnet for the Ralph loop,
+  it will not consume 1 premium token per request (to my experience, it consumes 1 premium request
+  after ~15 taks + reviewers)
 
 ## Typical End-to-End Workflow
 
@@ -207,7 +226,7 @@ graph TD
     G --> H[Ralph Loop: Coder Subagent]
     H --> I[Ralph Loop: Task Inspector]
     I -->|✅ Complete| J{More Tasks?}
-    I -->|🔴 Incomplete| H
+    I -->|� Incomplete| H
     J -->|Yes| H
     J -->|No| K{Phase Complete?}
     K -->|Yes, HITL| L[Phase Inspector + Human Review]

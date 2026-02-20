@@ -2,14 +2,12 @@
 
 **Plan Mode and "Ralph" implementation loop Workflows for GitHub Copilot**
 
-Craftsman is a collection of specialized AI agent modes that transform
+Craftsman is a collection of 2 specialized AI agent modes that transform
 how you plan, implement, and verify complex software changes in VS Code.
 
 Instead of endless manual prompting, Craftsman provides structured workflows
 that ensure quality through systematic planning, autonomous implementation,
 and continuous validation.
-
-[[_TOC_]]
 
 ## Why Craftsman?
 
@@ -25,7 +23,7 @@ Real teams use JIRA, Linear, or GitHub Issues.
 Craftsman uses the **JIRA-ID naming convention** (`.agents/changes/JIRA-123-description/`)
 to maintain traceability between planning artifacts and external project management systems.
 
-### 3. Can we implement linearly without constant manual prompting?
+### 3. Can we implement using a Ralph Wiggum loop directly in GitHub Copilot?
 
 Inspired by the **["Ralph Wiggum" pattern](https://www.humanlayer.dev/blog/brief-history-of-ralph)**,
 a simple loop that repeatedly delegates to subagents until all tasks are complete.
@@ -71,6 +69,7 @@ Plan Mode systematically explores your change request through:
 ├── 00.request.md              # Initial change request
 ├── 01-specification.md        # Reviewable design decisions and requirements
 ├── 02-plan.md                 # Technical architecture and dependencies
+├── 03-tasks-00-READBEFORE.md  # Critical context for all tasks
 ├── 03-tasks-01-models.md      # Phase 1, Task 1: Data models
 ├── 03-tasks-02-api.md         # Phase 1, Task 2: API endpoints
 ├── 03-tasks-03-tests.md       # Phase 2, Task 3: Unit tests
@@ -87,6 +86,14 @@ Plan Mode systematically explores your change request through:
   for easy putting issues in review in JIRA.
 - `02-plan.md`: A highly technical architecture plan that includes task dependencies
   and low-level details. This file is never used after task breakdown is finished.
+- `03-tasks-00-READBEFORE.md`: critical context and instructions for all tasks,
+  including applicable coding standards, testing requirements, and implementation guidelines.
+  These guidelines may be loaded using progressive disclosure by implementation agents
+  to ensure consistent adherence to standards.
+- `03-tasks-XX-*.md`: individual task files, each containing a single independent task
+  with just enough context for a fresh agent to implement it.
+  Tasks are grouped into phases, but each task file is self-contained
+  to reduce cognitive overload and token waste.
 
 ### 🔄 Ralph Loop Mode
 
@@ -103,8 +110,8 @@ Ralph Loop manages the complete implementation lifecycle:
 
 **Two operational modes**:
 
-- **Auto Mode** — continuous implementation until all tasks complete
-- **HITL Mode** — pauses at phase boundaries for human validation
+- **Auto Mode** (default) — continuous implementation until all tasks complete
+- **HITL Mode** (Human-in-the-loop) — pauses at phase boundaries for human validation
 
 **Verification system**:
 
@@ -112,28 +119,21 @@ Ralph Loop manages the complete implementation lifecycle:
 - **Phase Inspector** — generates comprehensive phase review reports
 - **Retry mechanism** — marks incomplete tasks as 🔴 for priority rework
 
+At the end of each coding task AND after each review, a commit message is generated.
+This creates a clear, traceable commit history that links implementation decisions
+back to the original plan and specification.
+
+It is higly recommended to squash all these commits into a single,
+self-contained commit before merging to the main branch,
+to avoid polluting the commit history with intermediate implementation steps.
+
 ---
 
-## Workflow Structure
+## Personas
 
-Craftsman organizes work in `.agents/changes/<JIRA-ID>-<description>/`:
-
-```
-.agents/changes/IDEA-01-refresh-command/
-├── 00.request.md              # Initial human request (Plan Mode input)
-├── 01-specification.md        # Reviewable spec (Plan Mode output)
-├── 02-plan.md                 # Technical architecture (Plan Mode output)
-├── 03-tasks-00-READBEFORE.md  # Context for all tasks (Plan Mode output)
-├── 03-tasks-01-*.md           # Phase 1 tasks (Plan Mode output)
-├── 03-tasks-02-*.md           # Phase 2 tasks (Plan Mode output)
-├── ...
-└── PROGRESS.md                # Task status tracking (Ralph Loop maintains)
-```
-
-**Progressive disclosure design**: Each task file is self-contained with just enough context for a fresh agent to implement it, reducing cognitive overload and token waste.
-
-**Subagents**:
-
+- **Orchestrator**: manages the overall workflow, delegates to subagents, and tracks progress
+  It nevers codes or even verify the actual job, it just tracks the progress and
+  delegates to the right subagent.
 - **Coder**: implements individual tasks based on task files
 - **Task Inspector**: verifies task completion against acceptance criteria
 - **Phase Inspector**: validates phase completion and generates review reports
@@ -143,46 +143,45 @@ Craftsman organizes work in `.agents/changes/<JIRA-ID>-<description>/`:
 **Current method** (manual):
 
 1. **Add Craftsman to your workspace**:
+
    ```bash
    # Clone or download Craftsman
    git clone https://github.com/your-org/Craftsman.git ~/Projects/Craftsman
    ```
 
+   Add the Craftsman folder to your VS Code workspace to make agent definitions available.
+
 2. **Copy agent modes to your project**:
+
    ```bash
    cd /path/to/your-project
    mkdir -p .github/agents
    cp ~/Projects/Craftsman/.github/agents/*.agent.md .github/agents/
    ```
 
-3. **Open Craftsman project in VS Code workspace**:
-   - In VS Code, use `File > Add Folder to Workspace`
-   - Add the Craftsman folder to your workspace
-   - This makes agent definitions available to GitHub Copilot
-
-4. **Access agents in Copilot Chat**:
-   - Click the agent picker in Copilot Chat
-   - Select "Craftsman: Plan Mode" or "Craftsman: Ralph Loop"
-
-**Future**: A simple CLI installer is planned to automate this setup.
-
 ## Quick Start
 
 ### Planning a Change
 
-1. Start Copilot Chat and select **@Craftsman: Plan Mode**
+1. Start Copilot Chat and select the Agent **@Craftsman: Plan Mode**
+   ![Plan Mode selection screenshot](images/agent-plan-mode.png)
 2. Provide your change request (or paste JIRA ticket)
 3. Answer the clarifying questions
-4. Review the generated specification
+4. Review the generated specification in `.agents/changes/<JIRA-123>-<short-description>/01-specification.md`
 5. Approve plan and task breakdown
 
 ### Implementing with Ralph Loop
 
 1. Start Copilot Chat and select **@Craftsman: Ralph Loop**
-2. Choose operational mode:
-   - **Auto Ralph Loop** — autonomous end-to-end implementation
-   - **Human-in-the-Loop Ralph Loop** — pause at phase boundaries
+   ![Ralph Loop selection screenshot](images/agent-ralp-mode.png)
+2. By default, the implementation is autonomous without human intervention.
+   You can choose to enable HITL (Human-in-the-Loop) mode to pause at phase boundaries for review.
 3. Provide path to planning artifacts (e.g., `.agents/changes/IDEA-01-refresh-command/`)
+
+   ![Ralph Loop Trigger](images/agent-ralph-trigger.png)
+
+   ![Ralph Loop Trigger](images/agent-ralph-trigger-hitl.png)
+
 4. Ralph Loop will:
    - Read spec, plan, and tasks
    - Delegate implementation to Coder subagents
@@ -220,48 +219,49 @@ graph TD
     N -->|No| H
 ```
 
-## Project Status
-
-**Version**: 0.8
-**Status**: Production-ready for experimentation
-**License**: MIT (see [LICENSE](LICENSE))
-
 ---
 
 ## Honest Feedback: Current Limitations
 
-Craftsman is a **production-level proof of concept**
-that demonstrates systematic agent workflows
-work in practice, but it has known limitations:
+Craftsman is a **production-level proof of concept**.
+It works, i use it daily in my workflow BUT it's not perfect.
+
+In this section, I humbly provides the real limitations and known issues
+of the current implementation.
+
+I would be so grateful if you could try it out and share your feedback,
+especially if you have suggestions for improvement.
 
 ### Known Issues
 
-1. **Task selection autonomy**: The orchestrator sometimes chooses tasks and sends task numbers to the Coder subagent, despite instructions stating "let the subagent choose". This creates unnecessary coupling.
+1. **Task selection autonomy**: The orchestrator sometimes chooses tasks and
+   sends task numbers to the Coder subagent, despite instructions stating
+   "let the subagent choose". This creates unnecessary coupling.
 
-2. **Phase Inspector underutilized**: The Phase Inspector is rarely triggered in practice, reducing phase-boundary validation effectiveness.
-
-3. **Rate limit recovery failures**: When hitting GitHub Copilot daily/weekly rate limits, retry behavior degrades:
+2. **Rate limit recovery failures**: When hitting GitHub Copilot daily/weekly rate limits, retry behavior degrades:
    - Orchestrator "forgets" to trigger subagents
    - Implementation happens in orchestrator instead of Coder subagent
    - **Workaround**: Start a fresh chat session
 
-4. **Feature completeness vs. accessibility gap**: The most significant limitation — at completion:
+3. **Feature completeness vs. accessibility gap**: The most significant limitation — at completion:
    - ✅ All features are typically implemented
    - ✅ Complete preflight checks pass
    - ✅ Unit tests pass
    - ✅ Code quality is high
    - ❌ **But features may not be user-accessible** (especially with UI)
 
-   Despite intensive planning with Claude Opus and no visible gaps in specifications, implemented features sometimes exist in code but lack integration points, UI bindings, or entry points for users to actually use them.
+   Despite intensive planning with Claude Opus and no visible gaps in specifications,
+   implemented features sometimes exist in code but lack integration points, UI bindings,
+   or entry points for users to actually use them.
 
-## Call for Contributors
-
-Craftsman is an **open research project**. We're exploring systematic agent workflows for complex software development, and we need your help:
+   I would say a human would have caught this gap during implementation,
+   but the agent still misses it.
 
 ## Acknowledgments
 
 Inspired by the "Ralph Wiggum" loop concept and refined through experimentation with GitHub Copilot's Agent Mode system.
 
 **Read more**:
+
 - [Original Reddit post](https://www.reddit.com/r/GithubCopilot/comments/1qapkdg/ralph_wiggum_technic_in_vs_code_copilot_with/)
 - [X/Twitter thread](https://x.com/stibbons31/status/2020456046259589229)

@@ -1,0 +1,189 @@
+# ================================================================================
+# !!! Do not modify this file directly !!!
+# This file is maintained in the following project:
+#   https://gitlabee.dt.renault.com/swlabs/nestor/boilerplates/alton-project-boilerplates
+# Please change it in the project above.
+# ================================================================================
+################################################################################
+#
+# Gitattributes - defining git attributes per path
+#
+# this .gitattributes file converts most binary format to git-lfs
+#
+# Resources:
+#
+# - https://git-lfs.com/
+# - https://docs.gitlab.com/ee/topics/git/lfs/
+# - https://git-scm.com/book/en/v2/Customizing-Git-Git-Attributes
+#
+################################################################################
+# Git will always convert line endings to LF on checkout.
+# You should use this for files that must keep LF endings, even on Windows.
+# (in case people don't have core.autocrlf set)
+* text=auto eol=lf
+# All files with '.lfs.' in its name will be placed in Git LFS automatically
+*.lfs.*  filter=lfs diff=lfs merge=lfs -text
+# Denote all files that are truly filter=lfs diff=lfs merge=lfs -text
+# and should not be modified.
+# Executables
+*.dll    filter=lfs diff=lfs merge=lfs -text
+*.exe    filter=lfs diff=lfs merge=lfs -text
+# documents
+*.csv    filter=lfs diff=lfs merge=lfs -text
+*.doc    filter=lfs diff=lfs merge=lfs -text
+*.docx   filter=lfs diff=lfs merge=lfs -text
+*.odf    filter=lfs diff=lfs merge=lfs -text
+*.odp    filter=lfs diff=lfs merge=lfs -text
+*.odt    filter=lfs diff=lfs merge=lfs -text
+*.pdf    filter=lfs diff=lfs merge=lfs -text
+*.ppt    filter=lfs diff=lfs merge=lfs -text
+*.pptx   filter=lfs diff=lfs merge=lfs -text
+*.xls    filter=lfs diff=lfs merge=lfs -text
+*.xls    filter=lfs diff=lfs merge=lfs -text
+*.xlsm   filter=lfs diff=lfs merge=lfs -text
+*.xlsx   filter=lfs diff=lfs merge=lfs -text
+# Fonts
+*.eot    filter=lfs diff=lfs merge=lfs -text
+*.otf    filter=lfs diff=lfs merge=lfs -text
+*.ttc    filter=lfs diff=lfs merge=lfs -text
+*.ttf    filter=lfs diff=lfs merge=lfs -text
+*.woff   filter=lfs diff=lfs merge=lfs -text
+*.woff2  filter=lfs diff=lfs merge=lfs -text
+# Images
+*.ai     filter=lfs diff=lfs merge=lfs -text
+*.bmp    filter=lfs diff=lfs merge=lfs -text
+*.drawio filter=lfs diff=lfs merge=lfs -text
+*.eps    filter=lfs diff=lfs merge=lfs -text
+*.gif    filter=lfs diff=lfs merge=lfs -text
+*.ico    filter=lfs diff=lfs merge=lfs -text
+*.jng    filter=lfs diff=lfs merge=lfs -text
+*.jp2    filter=lfs diff=lfs merge=lfs -text
+*.jpeg   filter=lfs diff=lfs merge=lfs -text
+*.jpg    filter=lfs diff=lfs merge=lfs -text
+*.jpx    filter=lfs diff=lfs merge=lfs -text
+*.jxr    filter=lfs diff=lfs merge=lfs -text
+*.png    filter=lfs diff=lfs merge=lfs -text
+*.psb    filter=lfs diff=lfs merge=lfs -text
+*.psd    filter=lfs diff=lfs merge=lfs -text
+*.svg    text
+*.svgz   filter=lfs diff=lfs merge=lfs -text
+*.tif    filter=lfs diff=lfs merge=lfs -text
+*.tiff   filter=lfs diff=lfs merge=lfs -text
+*.wbmp   filter=lfs diff=lfs merge=lfs -text
+*.webp   filter=lfs diff=lfs merge=lfs -text
+# Audio
+*.kar    filter=lfs diff=lfs merge=lfs -text
+*.m4a    filter=lfs diff=lfs merge=lfs -text
+*.mid    filter=lfs diff=lfs merge=lfs -text
+*.midi   filter=lfs diff=lfs merge=lfs -text
+*.mp3    filter=lfs diff=lfs merge=lfs -text
+*.ogg    filter=lfs diff=lfs merge=lfs -text
+*.ra     filter=lfs diff=lfs merge=lfs -text
+## VIDEO
+*.3gp    filter=lfs diff=lfs merge=lfs -text
+*.3gpp   filter=lfs diff=lfs merge=lfs -text
+*.as     filter=lfs diff=lfs merge=lfs -text
+*.asf    filter=lfs diff=lfs merge=lfs -text
+*.asx    filter=lfs diff=lfs merge=lfs -text
+*.fla    filter=lfs diff=lfs merge=lfs -text
+*.flv    filter=lfs diff=lfs merge=lfs -text
+*.m4v    filter=lfs diff=lfs merge=lfs -text
+*.mng    filter=lfs diff=lfs merge=lfs -text
+*.mov    filter=lfs diff=lfs merge=lfs -text
+*.mp4    filter=lfs diff=lfs merge=lfs -text
+*.mpeg   filter=lfs diff=lfs merge=lfs -text
+*.mpg    filter=lfs diff=lfs merge=lfs -text
+*.ogv    filter=lfs diff=lfs merge=lfs -text
+*.swc    filter=lfs diff=lfs merge=lfs -text
+*.swf    filter=lfs diff=lfs merge=lfs -text
+*.webm   filter=lfs diff=lfs merge=lfs -text
+# Archives
+*.3gp    filter=lfs diff=lfs merge=lfs -text
+*.7z     filter=lfs diff=lfs merge=lfs -text
+*.aar    filter=lfs diff=lfs merge=lfs -text
+*.ai     filter=lfs diff=lfs merge=lfs -text
+*.apk    filter=lfs diff=lfs merge=lfs -text
+*.as     filter=lfs diff=lfs merge=lfs -text
+*.asf    filter=lfs diff=lfs merge=lfs -text
+*.asx    filter=lfs diff=lfs merge=lfs -text
+*.bmp    filter=lfs diff=lfs merge=lfs -text
+*.cab    filter=lfs diff=lfs merge=lfs -text
+*.ear    filter=lfs diff=lfs merge=lfs -text
+*.eot    filter=lfs diff=lfs merge=lfs -text
+*.eps    filter=lfs diff=lfs merge=lfs -text
+*.fla    filter=lfs diff=lfs merge=lfs -text
+*.flv    filter=lfs diff=lfs merge=lfs -text
+*.gif    filter=lfs diff=lfs merge=lfs -text
+*.gz     filter=lfs diff=lfs merge=lfs -text
+*.ico    filter=lfs diff=lfs merge=lfs -text
+*.jar    filter=lfs diff=lfs merge=lfs -text
+*.jng    filter=lfs diff=lfs merge=lfs -text
+*.jp2    filter=lfs diff=lfs merge=lfs -text
+*.jpg    filter=lfs diff=lfs merge=lfs -text
+*.jpx    filter=lfs diff=lfs merge=lfs -text
+*.jxr    filter=lfs diff=lfs merge=lfs -text
+*.kar    filter=lfs diff=lfs merge=lfs -text
+*.m4a    filter=lfs diff=lfs merge=lfs -text
+*.m4v    filter=lfs diff=lfs merge=lfs -text
+*.mid    filter=lfs diff=lfs merge=lfs -text
+*.mng    filter=lfs diff=lfs merge=lfs -text
+*.mov    filter=lfs diff=lfs merge=lfs -text
+*.mp3    filter=lfs diff=lfs merge=lfs -text
+*.mp4    filter=lfs diff=lfs merge=lfs -text
+*.mpg    filter=lfs diff=lfs merge=lfs -text
+*.ogg    filter=lfs diff=lfs merge=lfs -text
+*.ogv    filter=lfs diff=lfs merge=lfs -text
+*.otf    filter=lfs diff=lfs merge=lfs -text
+*.pdf    filter=lfs diff=lfs merge=lfs -text
+*.png    filter=lfs diff=lfs merge=lfs -text
+*.psb    filter=lfs diff=lfs merge=lfs -text
+*.psd    filter=lfs diff=lfs merge=lfs -text
+*.ra     filter=lfs diff=lfs merge=lfs -text
+*.rar    filter=lfs diff=lfs merge=lfs -text
+*.swc    filter=lfs diff=lfs merge=lfs -text
+*.swf    filter=lfs diff=lfs merge=lfs -text
+*.tar    filter=lfs diff=lfs merge=lfs -text
+*.tgz    filter=lfs diff=lfs merge=lfs -text
+*.tif    filter=lfs diff=lfs merge=lfs -text
+*.ttc    filter=lfs diff=lfs merge=lfs -text
+*.ttf    filter=lfs diff=lfs merge=lfs -text
+*.war    filter=lfs diff=lfs merge=lfs -text
+*.woff   filter=lfs diff=lfs merge=lfs -text
+*.xz     filter=lfs diff=lfs merge=lfs -text
+*.zip    filter=lfs diff=lfs merge=lfs -text
+# Matlab binary format
+*.slx    filter=lfs diff=lfs merge=lfs -text
+*.mat    filter=lfs diff=lfs merge=lfs -text
+*.mltbx  filter=lfs diff=lfs merge=lfs -text
+*.cvt    filter=lfs diff=lfs merge=lfs -text
+*.mlx    filter=lfs diff=lfs merge=lfs -text
+*.sldd   filter=lfs diff=lfs merge=lfs -text
+*.mlapp  filter=lfs diff=lfs merge=lfs -text
+# Autosar
+*.arxml  filter=lfs diff=lfs merge=lfs -text
+# 3D objects
+*.ive    filter=lfs diff=lfs merge=lfs -text
+*.osgb   filter=lfs diff=lfs merge=lfs -text
+*.sketch filter=lfs diff=lfs merge=lfs -text
+# FMU
+*.fmu    filter=lfs diff=lfs merge=lfs -text
+# Misc
+*.cbf    filter=lfs diff=lfs merge=lfs -text
+*.csb    filter=lfs diff=lfs merge=lfs -text
+*.db     filter=lfs diff=lfs merge=lfs -text
+*.exp    filter=lfs diff=lfs merge=lfs -text
+*.lst    filter=lfs diff=lfs merge=lfs -text
+*.rgb    filter=lfs diff=lfs merge=lfs -text
+*.sol    filter=lfs diff=lfs merge=lfs -text
+*.tlog   filter=lfs diff=lfs merge=lfs -text
+*.tptbin filter=lfs diff=lfs merge=lfs -text
+*.vopt   filter=lfs diff=lfs merge=lfs -text
+# image binaries
+*.elf    filter=lfs diff=lfs merge=lfs -text
+*.map    filter=lfs diff=lfs merge=lfs -text
+# Geo
+*.cvt    filter=lfs diff=lfs merge=lfs -text
+# Python packages
+*.whl    filter=lfs diff=lfs merge=lfs -text
+local-models/\*\*/\* filter=lfs diff=lfs merge=lfs -text
+local-models/\*\* filter=lfs diff=lfs merge=lfs -text

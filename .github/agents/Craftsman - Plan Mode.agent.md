@@ -9,7 +9,7 @@ handoffs:
     prompt: Specification approved. Please create the implementation plan and task breakdown.
     send: false
   - label: Start Implementation in Ralph Loop
-    agent: 'Craftsman: Ralph Loop Mode 0.8'
+    agent: 'Craftsman: Ralph Loop 0.8'
     prompt: You are now the code implementation agent. Start the implementation based on the specification, plan and task breakdown
     send: false
   - label: Open Specification
